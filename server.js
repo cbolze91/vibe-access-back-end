@@ -1,21 +1,29 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const express = require('express');
+const app = express();
 const cors = require('cors');
 const logger = require('morgan');
 
+const authController = require('./controllers/auth');
+const userController = require('./controllers/user');
+const verifyJwt = require('./middlewares/verify-token');
+
 require('./db/connection');
 
-const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to VibeAccess API' });
-});
+// Public routes
+app.use('/auth', authController);
+
+// Protected routes
+app.use(verifyJwt);
+app.use('/users', userController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
