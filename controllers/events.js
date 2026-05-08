@@ -46,4 +46,29 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Update PUT /events/:eventId
+router.put('/:eventId', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.eventId);
+
+    if (!event) {
+      return res.status(404).json({ err: 'Event not found.' });
+    }
+
+    if (!event.creator.equals(req.user._id)) {
+      return res.status(403).json({ err: 'Not authorized.' });
+    }
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      req.params.eventId,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json(updatedEvent);
+  } catch (error) {
+    res.status(500).json({ err: error.message });
+  }
+});
+
 module.exports = router;
