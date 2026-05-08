@@ -14,6 +14,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Show GET /events/:eventId
+router.get('/:eventId', async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.eventId).populate(
+      'creator',
+      'username'
+    );
+
+    if (!event) {
+      return res.status(404).json({ err: 'Event not found.' });
+    }
+
+    res.status(200).json(event);
+  } catch (error) {
+    res.status(500).json({ err: error.message });
+  }
+});
+
 // Create POST /events
 router.post('/', async (req, res) => {
   try {
