@@ -8,6 +8,7 @@ const logger = require('morgan');
 
 const authController = require('./controllers/auth');
 const userController = require('./controllers/user');
+const eventController = require('./controllers/events'); 
 const verifyJwt = require('./middlewares/verify-token');
 
 require('./db/connection');
@@ -24,6 +25,7 @@ app.use('/auth', authController);
 // Protected routes
 app.use(verifyJwt);
 app.use('/users', userController);
+app.use('/events', eventController); 
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
