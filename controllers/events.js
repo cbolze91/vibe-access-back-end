@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Event = require('../models/event');
+const verifyJwt = require('../middlewares/verify-token');
 
 // Index GET /events
 router.get('/', async (req, res) => {
@@ -33,7 +34,7 @@ router.get('/:eventId', async (req, res) => {
 });
 
 // Create POST /events
-router.post('/', async (req, res) => {
+router.post('/', verifyJwt, async (req, res) => {
   try {
     const event = await Event.create({
       ...req.body,
@@ -47,7 +48,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update PUT /events/:eventId
-router.put('/:eventId', async (req, res) => {
+router.put('/:eventId', verifyJwt, async (req, res) => {
   try {
     const event = await Event.findById(req.params.eventId);
 
@@ -72,7 +73,7 @@ router.put('/:eventId', async (req, res) => {
 });
 
 // DELETE /events/:eventId
-router.delete('/:eventId', async (req, res) => {
+router.delete('/:eventId', verifyJwt, async (req, res) => {
   try {
     const event = await Event.findById(req.params.eventId);
 
