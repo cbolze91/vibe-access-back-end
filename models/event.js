@@ -16,6 +16,7 @@ const eventSchema = new mongoose.Schema(
       required: true,
     },
     category: String,
+    price: String,
     imageUrl: String,
     description: String,
     accessibilityFeatures: [String],
