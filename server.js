@@ -1,31 +1,33 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const logger = require('morgan');
+const cors = require("cors");
+const logger = require("morgan");
 
-const authController = require('./controllers/auth');
-const userController = require('./controllers/user');
-const eventController = require('./controllers/events'); 
-const verifyJwt = require('./middlewares/verify-token');
+const authController = require("./controllers/auth");
+const userController = require("./controllers/user");
+const eventController = require("./controllers/events");
+const rsvpController = require("./controllers/rsvps");
+const verifyJwt = require("./middlewares/verify-token");
 
-require('./db/connection');
+require("./db/connection");
 
 const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(logger('dev'));
+app.use(logger("dev"));
 
 // Public routes
-app.use('/auth', authController);
+app.use("/auth", authController);
 
 // Protected routes
 app.use(verifyJwt);
-app.use('/users', userController);
-app.use('/events', eventController); 
+app.use("/users", userController);
+app.use("/events", eventController);
+app.use("/rsvps", rsvpController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
