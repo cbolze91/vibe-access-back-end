@@ -22,11 +22,11 @@ app.use(logger("dev"));
 
 // Public routes
 app.use("/auth", authController);
+app.use("/events", eventController);
 
 // Protected routes
 app.use(verifyJwt);
 app.use("/users", userController);
-app.use("/events", eventController);
 app.use("/rsvps", rsvpController);
 
 app.listen(port, () => {
